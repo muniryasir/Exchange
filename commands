@@ -1,3 +1,5 @@
 docker run -it --rm -d --network mongodb --name notes -p 8081:8081 -e SERVER_PORT=8081 -e SERVER_PORT=8081 -e DATABASE_CONNECTIONSTRING=mongodb://mongodb:27017/yoda_notes notes-service
 
 curl --request POST --url http://localhost:8081/services/m/notes   --header 'content-type: application/json'   --data '{"name": "this is a note","text": "this is a note that I wanted to take while I was working on writing a blog post.","owner": "peter"}'
+
+docker run -it --rm --name dev -v ${pwd}:/code node-dev-image bash
