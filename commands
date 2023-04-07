@@ -2,6 +2,6 @@ docker run -it --rm -d --network mongodb --name notes -p 8081:8081 -e SERVER_POR
 
 curl --request POST --url http://localhost:8081/services/m/notes   --header 'content-type: application/json'   --data '{"name": "this is a note","text": "this is a note that I wanted to take while I was working on writing a blog post.","owner": "peter"}'
 
-docker run -it --rm --name dev -v ${pwd}:/frontend node-dev-image bash
+docker run -it --rm --name dev -p 3000:3000 -v ${pwd}:/frontend node-dev-image bash
 
 npx create-react-app exchange --template typescript
