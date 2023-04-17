@@ -24,7 +24,9 @@ const rows = [
   createData('Cupcake', 305, 3.7, 67, 4.3),
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
-
+const cellStyle = {
+  color: "white",
+}
 export default function BasicTable() {
   return (
     <TableContainer component={Paper} sx={{
@@ -39,11 +41,11 @@ export default function BasicTable() {
       }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell sx={cellStyle} >Name</TableCell>
+            <TableCell align="right" sx={cellStyle}>Symbol</TableCell>
+            <TableCell align="right" sx={cellStyle}>Price</TableCell>
+            <TableCell align="right" sx={cellStyle}>Past 7 Days</TableCell>
+            {/* <TableCell align="right" sx={cellStyle}>Protein&nbsp;(g)</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -52,13 +54,13 @@ export default function BasicTable() {
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 },   }}
             >
-              <TableCell component="th" scope="row" sx={{ color: "white",}}>
+              <TableCell component="th" scope="row" sx={cellStyle}>
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right" sx={cellStyle}>{row.calories}</TableCell>
+              <TableCell align="right" sx={cellStyle}>{row.fat}</TableCell>
+              <TableCell align="right" sx={cellStyle}>{row.carbs}</TableCell>
+              {/* <TableCell align="right" sx={cellStyle}>{row.protein}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>

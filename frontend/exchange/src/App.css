@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background: url(../public/assets/SL-081919-22630-26.jpg) no-repeat ;
+  background-size: 100%;
+
 }
 
 .App-logo {
