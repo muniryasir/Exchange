@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import axios from 'axios';
 function createData(
   name: string,
   calories: number,
@@ -28,6 +28,10 @@ const cellStyle = {
   color: "white",
 }
 export default function BasicTable() {
+  axios.get(`https://ai-engine-2pvpvk57w-muniryasir.vercel.app/stockdata`)
+  .then(res => {
+    alert(res)
+  })
   return (
     <TableContainer component={Paper} sx={{
         background: "#252324",
