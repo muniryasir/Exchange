@@ -28,7 +28,7 @@ const cellStyle = {
   color: "white",
 }
 export default function BasicTable() {
-  axios.get(`https://ai-engine-2pvpvk57w-muniryasir.vercel.app/stockdata`)
+  axios.get(`https://ai-engine.vercel.app/stockdata`)
   .then(res => {
     alert(res)
   })
