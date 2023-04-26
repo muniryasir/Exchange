@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from 'axios';
+import { useState, useEffect } from "react";
+
 function createData(
   name: string,
   calories: number,
@@ -16,22 +18,60 @@ function createData(
 ) {
   return { name, calories, fat, carbs, protein };
 }
+// const [count, setCount] = useState(0);
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+
 const cellStyle = {
   color: "white",
 }
 export default function BasicTable() {
-  axios.get(`https://ai-engine.vercel.app/stockdata`)
-  .then(res => {
-    alert(res)
-  })
+  const companies = ["MSFT", "V", "AAPL", "GOOGL", "JPM", "KO", "AMZN", "TSM", "INTC", "BABA"]
+
+  const [rows, setRows] = useState ([
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+    createData('Cupcake', 305, 3.7, 67, 4.3),
+    createData('Gingerbread', 356, 16.0, 49, 3.9),
+  ]);
+
+  var newRows = Array(); 
+    axios.get(`https://ai-engine.vercel.app/stockdata`)
+    .then(res => {
+        
+        for(var i=0; i<companies.length; i++) {
+          // var isMoreData = true;
+          // var countRecords = 0;
+          // while(isMoreData==true) { 
+          //   if(res.data[companies[i]][countRecords]) {
+          //     // {"closeprice": 291.6, "date": "2023-04-06T00:00:00+0000"}
+          //     var closePrice = res.data[companies[i][countRecords]]["closeprice"]
+          //     var date = res.data[companies[i][countRecords]]["closeprice"]
+          //     countRecords ++; 
+          //   }
+              var closePrice = res.data[companies[i]]["0"]["closeprice"]
+              var date = res.data[companies[i]]["0"]["closeprice"]
+              var symbol = companies[i];
+              var closePricePrev = res.data[companies[i]]["1"]["closeprice"]
+              var Trend;
+              if(closePricePrev>closePrice) {
+                Trend = 0;
+              } else if (closePricePrev<closePrice) {
+                Trend = 1;
+              } else {
+                Trend = 2;
+              }
+              newRows.push( createData(symbol, closePrice, date, Trend, 0))
+              UpdateRow();
+            }
+       
+  });
+  function UpdateRow() {
+    
+    // useEffect(() => {
+      setRows(newRows);
+    // })
+  }
   return (
     <TableContainer component={Paper} sx={{
         background: "#252324",
