@@ -11,12 +11,13 @@ import { useState, useEffect } from "react";
 
 function createData(
   name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
+  symbol: string,
+  price: number,
+  date: number,
+  trend: number,
+  past7days: Array<number>,
 ) {
-  return { name, calories, fat, carbs, protein };
+  return { name, symbol, price, date, trend, past7days };
 }
 // const [count, setCount] = useState(0);
 
@@ -27,18 +28,12 @@ const cellStyle = {
 export default function BasicTable() {
   const companies = ["MSFT", "V", "AAPL", "GOOGL", "JPM", "KO", "AMZN", "TSM", "INTC", "BABA"]
 
-  const [rows, setRows] = useState ([
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ]);
+  const [rows, setRows] = useState ([]);
 
   var newRows = Array(); 
     axios.get(`https://ai-engine.vercel.app/stockdata`)
     .then(res => {
-        
+         
         for(var i=0; i<companies.length; i++) {
           // var isMoreData = true;
           // var countRecords = 0;
@@ -50,10 +45,11 @@ export default function BasicTable() {
           //     countRecords ++; 
           //   }
               var closePrice = res.data[companies[i]]["0"]["closeprice"]
-              var date = res.data[companies[i]]["0"]["closeprice"]
+              var date = res.data[companies[i]]["0"]["date"]
               var symbol = companies[i];
               var closePricePrev = res.data[companies[i]]["1"]["closeprice"]
               var Trend;
+              var name = res.data[companies[i]]["name"];
               if(closePricePrev>closePrice) {
                 Trend = 0;
               } else if (closePricePrev<closePrice) {
@@ -61,12 +57,13 @@ export default function BasicTable() {
               } else {
                 Trend = 2;
               }
-              newRows.push( createData(symbol, closePrice, date, Trend, 0))
-              UpdateRow();
+              newRows.push( createData(name, symbol, closePrice, date, Trend, [1.1, 1.1]))
+              UpdateRow(newRows);
             }
+          
        
   });
-  function UpdateRow() {
+  function UpdateRow(newRows:any) {
     
     // useEffect(() => {
       setRows(newRows);
@@ -88,12 +85,13 @@ export default function BasicTable() {
             <TableCell sx={cellStyle} >Name</TableCell>
             <TableCell align="right" sx={cellStyle}>Symbol</TableCell>
             <TableCell align="right" sx={cellStyle}>Price</TableCell>
+            <TableCell align="right" sx={cellStyle}>Date</TableCell>
             <TableCell align="right" sx={cellStyle}>Past 7 Days</TableCell>
             {/* <TableCell align="right" sx={cellStyle}>Protein&nbsp;(g)</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row:any) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 },   }}
@@ -101,10 +99,10 @@ export default function BasicTable() {
               <TableCell component="th" scope="row" sx={cellStyle}>
                 {row.name}
               </TableCell>
-              <TableCell align="right" sx={cellStyle}>{row.calories}</TableCell>
-              <TableCell align="right" sx={cellStyle}>{row.fat}</TableCell>
-              <TableCell align="right" sx={cellStyle}>{row.carbs}</TableCell>
-              {/* <TableCell align="right" sx={cellStyle}>{row.protein}</TableCell> */}
+              <TableCell align="right" sx={cellStyle}>{row.symbol}</TableCell>
+              <TableCell align="right" sx={cellStyle}>{row.price}</TableCell>
+              <TableCell align="right" sx={cellStyle}>{row.date}</TableCell>
+              <TableCell align="right" sx={cellStyle}>{row.past7days}</TableCell>
             </TableRow>
           ))}
         </TableBody>
